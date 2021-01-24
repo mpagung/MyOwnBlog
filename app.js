@@ -18,10 +18,20 @@ app.use(express.static("public"));
 app.get("/",function(req,res){
   res.render("home",{
     content1:homeStartingContent,
-    content2:aboutContent,
-    content3:contactContent
+    // content2:aboutContent,
+    // content3:contactContent
   })
 })
+
+app.get("/about",function(req,res){
+  res.render("about",{
+    // content1:homeStartingContent,
+    content2:aboutContent
+    // content3:contactContent
+  })
+})
+
+
 
 // app.post("/",function(req,res){
 //   res.redirect("/")
