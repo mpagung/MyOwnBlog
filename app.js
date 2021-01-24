@@ -31,7 +31,13 @@ app.get("/about",function(req,res){
   })
 })
 
-
+app.get("/contact",function(req,res){
+  res.render("about",{
+    // content1:homeStartingContent,
+    // content2:aboutContent
+    content3:contactContent
+  })
+})
 
 // app.post("/",function(req,res){
 //   res.redirect("/")
