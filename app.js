@@ -39,9 +39,13 @@ app.get("/contact",function(req,res){
   })
 })
 
-// app.post("/",function(req,res){
-//   res.redirect("/")
-// })
+app.get("/compose",function(req,res){
+  res.render("compose")
+})
+
+app.post("/compose",function(req,res){
+  console.log(req.body.postTitle)
+})
 
 
 
