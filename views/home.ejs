@@ -1,8 +1,11 @@
 <%- include("partials/header") -%>
 
 <h1>Home</h1>
-
 <p> <%= content1 %> </p>
+
+<form class="" action="/compose" method="get">
+  <button type="submit" class="btn btn-light" name="button">Create a new post!</button>
+</form>
 
 <% /* %>
 <% for (var i=0;i<post.length;i++){%>
@@ -13,8 +16,10 @@
 <% */ %>
 
 <% post.forEach(function(item){%>
-  <% console.log(item.title) %>
   <h1><%=item.title%></h1>
   <p><%=item.body%></p>
+  <a href="<%= item.link %>">Read more</a>
 <% }) %>
+
+
 <%- include("partials/footer") -%>
