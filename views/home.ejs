@@ -4,10 +4,17 @@
 
 <p> <%= content1 %> </p>
 
-
+<% /* %>
 <% for (var i=0;i<post.length;i++){%>
   <% console.log(post[i].title+", "+i) %>
   <h1><%=post[i].title%></h1>
   <p><%=post[i].body%></p>
 <%}%>
+<% */ %>
+
+<% post.forEach(function(item){%>
+  <% console.log(item.title) %>
+  <h1><%=item.title%></h1>
+  <p><%=item.body%></p>
+<% }) %>
 <%- include("partials/footer") -%>
