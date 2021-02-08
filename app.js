@@ -18,7 +18,9 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://mpagung:mp4agung@cluster0.yyw0c.mongodb.net/todolistDB",{ useNewUrlParser: true , useUnifiedTopology: true } );
+const user=process.env.USR;
+const pass=process.env.PWD;
+mongoose.connect("mongodb+srv://"+user+":"+pass+"@cluster0.yyw0c.mongodb.net/todolistDB",{ useNewUrlParser: true , useUnifiedTopology: true } );
 const blogSchema={
   title: String,
   content: String
