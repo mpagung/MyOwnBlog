@@ -72,16 +72,16 @@ app.get("/contact",function(req,res){
 app.get("/compose",function(req,res){
   // console.log("hello")
   res.render("compose")
+
 })
 
 app.post("/compose",function(req,res){
 
-  const post={
+  const blogpost= new Blog({
     title:req.body.postTitle,
-    body:req.body.postValue
-  };
-  posts.push(post);
-
+    content:req.body.postValue
+  });
+  blogpost.save();
   // console.log(posts);
   res.redirect("/");
 })
