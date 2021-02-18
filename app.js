@@ -1,5 +1,5 @@
 //jshint esversion:6
-
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 const user=process.env.USR;
-const pass=process.env.PWD;
-mongoose.connect("mongodb+srv://"+user+":"+pass+"@cluster0.yyw0c.mongodb.net/todolistDB",{ useNewUrlParser: true , useUnifiedTopology: true } );
+const pass=process.env.Password;
+mongoose.connect("mongodb+srv://"+user+":"+pass+"@cluster0.yyw0c.mongodb.net/todolistDB?retryWrites=true&w=majority",{ useNewUrlParser: true , useUnifiedTopology: true } );
 const blogSchema={
   title: String,
   content: String
@@ -29,31 +29,13 @@ const blogSchema={
 const Blog=mongoose.model("Blogpost", blogSchema);
 
 app.get("/",function(req,res){
-  const items=[];
-  const maxlength=100;
-  posts.forEach(function(post){
-
-    const item={
-      title:post["title"],
-      body:post["body"],
-      link:"/posts/"+lodash.lowerCase(post["title"])};
-
-    if (item.body.length>maxlength){
-      item.body=item.body.substring(0,maxlength)+"...";
-    };
-    console.log(item.body);
-
-
-    items.push(item);
+  Blog.find({}, function(err, posts){
+    res.render("home", {
+      startingContent: homeStartingContent,
+      posts: posts
+      });
   });
-
-  res.render("home",{
-    content1:homeStartingContent,
-    post:items
-    // content2:aboutContent,
-    // content3:contactContent
-  })
-})
+});
 
 app.get("/about",function(req,res){
   res.render("about",{
@@ -83,26 +65,52 @@ app.post("/compose",function(req,res){
     title:req.body.postTitle,
     content:req.body.postValue
   });
-  blogpost.save();
-  // console.log(posts);
-  res.redirect("/");
+  blogpost.save(function(err){
+    if (!err){
+      res.redirect("/");
+    }
+  });
 })
 
-app.get("/posts/:postName", function(req,res){
-  const postName=lodash.lowerCase(req.params.postName);
+app.get("/posts/:post_id", function(req,res){
+  const post_id=req.params.post_id;
+
+  Blog.find({}, function(err, posts){
+    posts.forEach(function(post){
+      const test=post._id;
+      // console.log("id post:"+"'"+test+"'"+" type:"+(typeof JSON.stringify(test)));
+      // console.log("id link:"+"'"+post_id+"'"+" type:"+(typeof post_id));
+      // console.log("isit?"+post_id.localeCompare(test));
+
+    });
+  });
 
 
-  posts.forEach(function(post){
-    console.log("url:"+postName+",title:"+lodash.lowerCase(post.title));
-    if (postName===lodash.lowerCase(post.title)){
-      console.log("Match found!")
-      res.render("post",{
-        post:post
-      })
-    } else {
-      console.log("Not a match!")
-    }
-  })
+
+
+  Blog.findOne({_id:post_id}, function(err, posts){
+    // console.log("found a match!");
+    // console.log("type:"+typeof posts);
+    // console.log("content:"+posts.content);
+    res.render("post", {
+      startingContent: homeStartingContent,
+      post: posts
+      });
+  });
+
+
+
+  // posts.forEach(function(post){
+  //   console.log("url:"+postName+",id:"+lodash.lowerCase(post.title));
+  //   if (post_id===lodash.lowerCase(post._id)){
+  //     console.log("Match found!")
+  //     res.render("post",{
+  //       post:post
+  //     })
+  //   } else {
+  //     console.log("Not a match!")
+  //   }
+  // })
 
   // res.render("post",{
   //   postName:req.params.postName

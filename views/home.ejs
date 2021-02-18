@@ -1,7 +1,7 @@
 <%- include("partials/header") -%>
 
 <h1>Home</h1>
-<p> <%= content1 %> </p>
+<p> <%= startingContent %> </p>
 
 <form class="" action="/compose" method="get">
   <button type="submit" class="btn btn-light" name="button">Create a new post!</button>
@@ -14,11 +14,18 @@
   <p><%=post[i].body%></p>
 <%}%>
 <% */ %>
-
-<% post.forEach(function(item){%>
+<% const maxletter=100;%>
+<% var contentstring="";%>
+<% posts.forEach(function(item){%>
   <h1><%=item.title%></h1>
-  <p><%=item.body%></p>
-  <a href="<%= item.link %>">Read more</a>
+  <% if(item.content.length>maxletter){%>
+  <%  contentstring=item.content.substring(0, 100) + " ...";%>
+  <%} else {%>
+  <%  contentstring=item.content;%>
+  <%}%>
+  <p><%=contentstring%>
+  <% const itemid="/posts/"+item._id; %>
+  <a href="<%= itemid %>">Read more</a>
 <% }) %>
 
 
